@@ -1,4 +1,5 @@
 ﻿maps = {};
+observers = {};
 layers = {};
 
 window.leafletBlazor = {
@@ -262,6 +263,37 @@ window.leafletBlazor = {
 
         if (map.getZoom() > map.getMinZoom()) {
             map.zoomOut(map.options.zoomDelta * (e.shiftKey ? 3 : 1));
+        }
+    },
+    invalidateSize(mapId) {
+        const map = maps[mapId];
+        if (map) {
+            map.invalidateSize();
+        }
+    },
+    observeMapResize(mapId) {
+        const mapEl = document.getElementById(mapId);
+
+        if (!mapEl) {
+            return;
+        }
+
+        if (observers[mapId]) {
+            observers[mapId].unobserve(mapEl);
+        }
+
+        observers[mapId] = new ResizeObserver(() => requestAnimationFrame(() => {
+            console.debug('Map resize detected');
+            if (maps[mapId]) {
+                maps[mapId].invalidateSize()
+            }
+        }));
+        observers[mapId].observe(mapEl);
+    },
+    unobserveMapResize(mapId) {
+        const mapEl = document.getElementById(mapId);
+        if (observers[mapId] && mapEl) {
+            observers[mapId].unobserve(mapEl);
         }
     }
 };
