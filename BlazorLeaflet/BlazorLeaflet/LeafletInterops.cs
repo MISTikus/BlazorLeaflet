@@ -66,6 +66,12 @@ namespace BlazorLeaflet
             DisposeLayerReference(layerId);
         }
 
+        public static async ValueTask InvalidateSize(IJSRuntime jsRuntime, string mapId) => await jsRuntime.InvokeVoidAsync($"{_BaseObjectContainer}.invalidateSize", mapId);
+
+        public static async ValueTask ObserveMapResize(IJSRuntime jsRuntime, string mapId) => await jsRuntime.InvokeVoidAsync($"{_BaseObjectContainer}.observeMapResize", mapId);
+
+        public static async ValueTask UnobserveMapResize(IJSRuntime jsRuntime, string mapId) => await jsRuntime.InvokeVoidAsync($"{_BaseObjectContainer}.unobserveMapResize", mapId);
+
         public static ValueTask UpdatePopupContent(IJSRuntime jsRuntime, string mapId, Layer layer) =>
             jsRuntime.InvokeVoidAsync($"{_BaseObjectContainer}.updatePopupContent", mapId, layer.Id, layer.Popup?.Content);
 

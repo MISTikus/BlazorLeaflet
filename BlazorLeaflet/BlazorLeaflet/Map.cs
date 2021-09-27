@@ -120,6 +120,10 @@ namespace BlazorLeaflet
             await LeafletInterops.RemoveLayer(this._jsRuntime, Id, layer.Id);
         }
 
+        public async Task ObserveMapResize() => await LeafletInterops.ObserveMapResize(this._jsRuntime, Id);
+
+        public async Task UnobserveMapResize() => await LeafletInterops.UnobserveMapResize(this._jsRuntime, Id);
+
         /// <summary>
         /// Get a read only collection of the current layers.
         /// </summary>
